@@ -11,34 +11,49 @@ def main():
     dataset = Dataset()
 
     # comment if you don't need to download the dataset files:
-    # dataset.download()
+    dataset.download()
     
     dim = dataset.dim()
     data = dataset.data()
     query = dataset.query()
     k = 100  # number of nearest neighbors to return
     print("data shape:", data.shape, "query shape:", query.shape)
-    flatCosSimilarity = FlatCosSimilarity(dim)
-    flatCosSimilarity.indexing(data)
-    flatCosSimilarity.query(query, k)
+
     flatL2Distance = FlatL2Distance(dim)
     flatL2Distance.indexing(data)
     flatL2Distance.query(query, k)
+    accuracyBase = flatL2Distance.docIndexes
+    flatL2Distance.score(accuracyBase)
+
+    flatCosSimilarity = FlatCosSimilarity(dim)
+    flatCosSimilarity.indexing(data)
+    flatCosSimilarity.query(query, k)
+    flatCosSimilarity.score(accuracyBase)
+    
     localitySensitiveHasing = LocalitySensitiveHasing(dim)
     localitySensitiveHasing.indexing(data)
     localitySensitiveHasing.query(query, k)
+    localitySensitiveHasing.score(accuracyBase)
+
     smallWorldGraph = SmallWorldGraph(dim)
     smallWorldGraph.indexing(data)
     smallWorldGraph.query(query, k)
+    smallWorldGraph.score(accuracyBase)
+
     vectorQuantization = VectorQuantization(dim)
     vectorQuantization.indexing(data)
     vectorQuantization.query(query, k)
+    vectorQuantization.score(accuracyBase)
+
     productQuantization = ProductQuantization(dim)
     productQuantization.indexing(data)
     productQuantization.query(query, k)
+    productQuantization.score(accuracyBase)
+
     invertedFileProductQuantization = InvertedFileProductQuantization(dim)
     invertedFileProductQuantization.indexing(data)
     invertedFileProductQuantization.query(query, k)
+    invertedFileProductQuantization.score(accuracyBase)
 
 if __name__ == "__main__":
     main()

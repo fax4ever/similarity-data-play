@@ -18,3 +18,6 @@ class FlatCosSimilarity:
         print("query time:", timeit.default_timer() - start)
         print("knn doc indexes:", self.docIndexes)
         print("inner products:", self.innerProducts)
+
+    def score(self, base: numpy.ndarray):
+        print("accuracy:", helper.score(self.docIndexes, base))

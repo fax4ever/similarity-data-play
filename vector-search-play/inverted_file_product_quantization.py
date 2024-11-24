@@ -12,6 +12,7 @@ class InvertedFileProductQuantization:
         nlist = 2048  # how many Voronoi cells (must be >= k* which is 2**nbits)
         nbits = 8  # when using IVF+PQ, higher nbits values are not supported
         self.index = faiss.IndexIVFPQ(vecs, dim, nlist, m, nbits)
+        self.index.nprobe = 48
 
     def indexing(self, data: numpy.ndarray):
         self.index.train(data)
@@ -24,3 +25,6 @@ class InvertedFileProductQuantization:
         print("query time:", timeit.default_timer() - start)
         print("knn doc indexes:", self.docIndexes)
         print("distances:", self.distances)
+
+    def score(self, base: numpy.ndarray):
+        print("accuracy:", helper.score(self.docIndexes, base))

@@ -18,3 +18,6 @@ class FlatL2Distance:
         print("query time:", timeit.default_timer() - start)
         print("knn doc indexes:", self.docIndexes)
         print("distances:", self.distances)
+
+    def score(self, base: numpy.ndarray):
+        print("accuracy:", helper.score(self.docIndexes, base))
