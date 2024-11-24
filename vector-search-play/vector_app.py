@@ -7,8 +7,10 @@ from product_quantization import ProductQuantization
 
 def main():
     dataset = Dataset()
-    # uncomment if you need to download the dataset files:
-    # dataset.download()
+
+    # comment if you don't need to download the dataset files:
+    dataset.download()
+    
     dim = dataset.dim()
     data = dataset.data()
     query = dataset.query()
