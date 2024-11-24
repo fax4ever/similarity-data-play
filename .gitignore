@@ -161,8 +161,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-vector-faiss/sift.tar.gz
-vector-faiss/sift/*
 vector-search-play/sift.tar.gz
 vector-search-play/sift/*
 vector-search-play/siftsmall.tar.gz

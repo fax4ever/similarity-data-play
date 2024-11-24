@@ -23,13 +23,13 @@ conda install -c pytorch faiss-cpu=1.9.0
 4. Using a small data set
 
 ``` bash
-python vector_app.py
+python vector_app.py small
 ```
 
 4. Using a large data set
 
 ``` bash
-python vector_app.py
+python vector_app.py large
 ```
 
 # Results
