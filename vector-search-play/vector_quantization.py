@@ -7,7 +7,7 @@ class VectorQuantization:
     def __init__(self, dim: int):
         print("# Vector Quantization")
         nlist = 128  # number of cells/clusters to partition data into
-        quantizer = faiss.IndexFlatIP(dim)  # how the vectors will be stored/compared
+        quantizer = faiss.IndexFlatL2(dim)  # how the vectors will be stored/compared
         self.index = faiss.IndexIVFFlat(quantizer, dim, nlist)
         self.index.nprobe = 8  # set how many of nearest cells to search
 

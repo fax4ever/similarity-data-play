@@ -7,8 +7,8 @@ class SmallWorldGraph:
     def __init__(self, dim: int):
         print("# Hierarchical Navigable Small World Graphs")
         M = 8  # number of connections each vertex will have
-        ef_search = 8  # depth of layers explored during search
-        ef_construction = 8  # depth of layers explored during index construction
+        ef_search = 32  # depth of layers explored during search
+        ef_construction = 32  # depth of layers explored during index construction
         self.index = faiss.IndexHNSWFlat(dim, M)
         self.index.hnsw.efConstruction = ef_construction
         self.index.hnsw.efSearch = ef_search

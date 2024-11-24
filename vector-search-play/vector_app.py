@@ -11,7 +11,7 @@ from inverted_file_product_quantization import InvertedFileProductQuantization
 def main():
     args = sys.argv[1:]
     if not args:
-        large = True
+        large = False
     elif args[0] == 'small':
         large = False    
     else:
