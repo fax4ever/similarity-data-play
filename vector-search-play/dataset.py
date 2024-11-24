@@ -33,17 +33,26 @@ def read_fvecs(fp):
     return result
 
 class Dataset:
-    def __init__(self):
-        pass
+    def __init__(self, large: bool):
+        self.large = large
 
     def download(self):
-        sift1m()
+        if self.large:
+            sift1m()
+        else:    
+            sift10k()
 
     def data(self) -> numpy.ndarray:
-        return read_fvecs("./sift/sift_base.fvecs")
+        if self.large:
+            return read_fvecs("./sift/sift_base.fvecs")
+        else:    
+            return read_fvecs("./siftsmall/siftsmall_base.fvecs")
     
     def query(self) -> numpy.ndarray:
-        xq = read_fvecs('./sift/sift_query.fvecs')
+        if self.large:
+            xq = read_fvecs('./sift/sift_query.fvecs')
+        else:
+            xq = read_fvecs('./siftsmall/siftsmall_query.fvecs')    
         return xq[0:1]
     
     def dim(self) -> int:

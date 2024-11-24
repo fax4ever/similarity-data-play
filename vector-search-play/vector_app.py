@@ -1,3 +1,4 @@
+import sys
 from dataset import Dataset
 from flat_cos_similarity import FlatCosSimilarity
 from flat_l2_distance import FlatL2Distance
@@ -8,7 +9,15 @@ from product_quantization import ProductQuantization
 from inverted_file_product_quantization import InvertedFileProductQuantization
 
 def main():
-    dataset = Dataset()
+    args = sys.argv[1:]
+    if not args:
+        large = True
+    elif args[0] == 'small':
+        large = False    
+    else:
+        large = True    
+
+    dataset = Dataset(large)
 
     # comment if you don't need to download the dataset files:
     dataset.download()
