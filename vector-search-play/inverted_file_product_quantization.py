@@ -3,13 +3,15 @@ import helper
 import faiss
 import timeit
 
-class ProductQuantization:
+class InvertedFileProductQuantization:
     def __init__(self, dim: int):
-        print("# Product Quantization")
+        print("# Inverted File Product Quantization")
         m = 8
         assert dim % m == 0
-        nbits = 8  # number of bits per subquantizer, k* = 2**nbits
-        self.index = faiss.IndexPQ(dim, m, nbits)
+        vecs = faiss.IndexFlatL2(dim)
+        nlist = 2048  # how many Voronoi cells (must be >= k* which is 2**nbits)
+        nbits = 8  # when using IVF+PQ, higher nbits values are not supported
+        self.index = faiss.IndexIVFPQ(vecs, dim, nlist, m, nbits)
 
     def indexing(self, data: numpy.ndarray):
         self.index.train(data)

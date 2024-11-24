@@ -19,7 +19,7 @@ class SmallWorldGraph:
 
     def query(self, query: numpy.ndarray, k: int):
         start = timeit.default_timer()
-        self.innerProducts, self.docIndexes = self.index.search(query, k)
-        print("query time :", timeit.default_timer() - start)
-        print("knn doc indexes", self.docIndexes)
-        print("doc inner products", self.innerProducts)
+        self.distances, self.docIndexes = self.index.search(query, k)
+        print("query time:", timeit.default_timer() - start)
+        print("knn doc indexes:", self.docIndexes)
+        print("distances:", self.distances)

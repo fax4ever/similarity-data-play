@@ -3,16 +3,12 @@ import helper
 import faiss
 import timeit
 
-class ProductQuantization:
+class FlatL2Distance:
     def __init__(self, dim: int):
-        print("# Product Quantization")
-        m = 8
-        assert dim % m == 0
-        nbits = 8  # number of bits per subquantizer, k* = 2**nbits
-        self.index = faiss.IndexPQ(dim, m, nbits)
+        print("# Flat L2 distance")
+        self.index = faiss.IndexFlatL2(dim)
 
     def indexing(self, data: numpy.ndarray):
-        self.index.train(data)
         self.index.add(data)
         print("index size:", helper.get_memory(self.index))
 

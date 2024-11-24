@@ -5,7 +5,7 @@ import timeit
 
 class FlatCosSimilarity:
     def __init__(self, dim: int):
-        print("# Flat cosine similarity (inner product) index")
+        print("# Flat cosine similarity (inner product)")
         self.index = faiss.IndexFlatIP(dim)
 
     def indexing(self, data: numpy.ndarray):
@@ -15,6 +15,6 @@ class FlatCosSimilarity:
     def query(self, query: numpy.ndarray, k: int):
         start = timeit.default_timer()
         self.innerProducts, self.docIndexes = self.index.search(query, k)
-        print("query time :", timeit.default_timer() - start)
-        print("knn doc indexes", self.docIndexes)
-        print("doc inner products", self.innerProducts)
+        print("query time:", timeit.default_timer() - start)
+        print("knn doc indexes:", self.docIndexes)
+        print("inner products:", self.innerProducts)
