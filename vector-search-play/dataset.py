@@ -1,3 +1,4 @@
+import numpy
 import shutil
 import urllib.request as request
 from contextlib import closing
@@ -24,3 +25,26 @@ def sift10k():
     tar = tarfile.open('siftsmall.tar.gz', "r:gz")
     print("file siftsmall.tar.gz: extracted")
     tar.extractall()
+
+def read_fvecs(fp):
+    a = numpy.fromfile(fp, dtype='int32')
+    d = a[0]
+    result = a.reshape(-1, d + 1)[:, 1:].copy().view('float32')
+    return result
+
+class Dataset:
+    def __init__(self):
+        pass
+
+    def download(self):
+        sift1m()
+
+    def data(self) -> numpy.ndarray:
+        return read_fvecs("./sift/sift_base.fvecs")
+    
+    def query(self) -> numpy.ndarray:
+        xq = read_fvecs('./sift/sift_query.fvecs')
+        return xq[0:1]
+    
+    def dim(self) -> int:
+        return 128

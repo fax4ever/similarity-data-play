@@ -163,3 +163,5 @@ cython_debug/
 
 vector-faiss/sift.tar.gz
 vector-faiss/sift/*
+vector-search-play/sift.tar.gz
+vector-search-play/sift/*

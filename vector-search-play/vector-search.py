@@ -1,22 +1,18 @@
 import faiss
-import fileutil
-import nputil
+from dataset import Dataset
 
 def main():
+    data = Dataset()
     # uncomment if you need to download the dataset
-    # fileutil.sift1m()
+    # d.download()
+    d = data.dim()
+    xb = data.data()
+    xq_0 = data.query()
 
-    # data we will search through
-    xb = nputil.read_fvecs("./sift/sift_base.fvecs") # 1M samples
-    # also get some query vectors to search with
-    xq = nputil.read_fvecs('./sift/sift_query.fvecs')
-    # take just one query (there are many in sift_learn.fvecs)
-    xq_0 = xq[0:1] #0:1 to keep first query point
-    print(xb.shape, xq.shape, xq_0.shape)
+    print(xb.shape, xq_0.shape)
     print(xb)
-    print(xq)
+    print(xq_0)
 
-    d = 128  # dimensionality of Sift1M data
     k = 10  # number of nearest neighbors to return
     index = faiss.IndexFlatIP(d)
     index.add(xb)
