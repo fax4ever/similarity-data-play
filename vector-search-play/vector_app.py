@@ -1,5 +1,9 @@
 from dataset import Dataset
 from flat_cos_similarity import FlatCosSimilarity
+from locality_sensitive_hasing import LocalitySensitiveHasing
+from small_world_graph import SmallWorldGraph
+from vector_quantization import VectorQuantization
+from product_quantization import ProductQuantization
 
 def main():
     dataset = Dataset()
@@ -13,7 +17,18 @@ def main():
     flatCosSimilarity = FlatCosSimilarity(dim)
     flatCosSimilarity.indexing(data)
     flatCosSimilarity.query(query, k)
-    print("PART 2: locality sentive hasing cosine similarity index")
+    localitySensitiveHasing = LocalitySensitiveHasing(dim)
+    localitySensitiveHasing.indexing(data)
+    localitySensitiveHasing.query(query, k)
+    smallWorldGraph = SmallWorldGraph(dim)
+    smallWorldGraph.indexing(data)
+    smallWorldGraph.query(query, k)
+    vectorQuantization = VectorQuantization(dim)
+    vectorQuantization.indexing(data)
+    vectorQuantization.query(query, k)
+    productQuantization = ProductQuantization(dim)
+    productQuantization.indexing(data)
+    productQuantization.query(query, k)
 
 if __name__ == "__main__":
     main()
