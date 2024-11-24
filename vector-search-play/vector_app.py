@@ -20,7 +20,7 @@ def main():
     dataset = Dataset(large)
 
     # comment if you don't need to download the dataset files:
-    dataset.download()
+    # dataset.download()
     
     dim = dataset.dim()
     data = dataset.data()
@@ -36,33 +36,27 @@ def main():
 
     flatCosSimilarity = FlatCosSimilarity(dim)
     flatCosSimilarity.indexing(data)
-    flatCosSimilarity.query(query, k)
-    flatCosSimilarity.score(accuracyBase)
+    flatCosSimilarity.query(query, k, accuracyBase)
     
     localitySensitiveHasing = LocalitySensitiveHasing(dim)
     localitySensitiveHasing.indexing(data)
-    localitySensitiveHasing.query(query, k)
-    localitySensitiveHasing.score(accuracyBase)
-
+    localitySensitiveHasing.query(query, k, accuracyBase)
+    
     smallWorldGraph = SmallWorldGraph(dim)
     smallWorldGraph.indexing(data)
-    smallWorldGraph.query(query, k)
-    smallWorldGraph.score(accuracyBase)
+    smallWorldGraph.query(query, k, accuracyBase)
 
     vectorQuantization = VectorQuantization(dim)
     vectorQuantization.indexing(data)
-    vectorQuantization.query(query, k)
-    vectorQuantization.score(accuracyBase)
+    vectorQuantization.query(query, k, accuracyBase)
 
     productQuantization = ProductQuantization(dim)
     productQuantization.indexing(data)
-    productQuantization.query(query, k)
-    productQuantization.score(accuracyBase)
+    productQuantization.query(query, k, accuracyBase)
 
     invertedFileProductQuantization = InvertedFileProductQuantization(dim)
     invertedFileProductQuantization.indexing(data)
-    invertedFileProductQuantization.query(query, k)
-    invertedFileProductQuantization.score(accuracyBase)
+    invertedFileProductQuantization.query(query, k, accuracyBase)
 
 if __name__ == "__main__":
     main()

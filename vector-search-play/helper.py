@@ -1,6 +1,9 @@
 import faiss
 import os
 import numpy
+import timeit 
+
+TIMES = 7
 
 def get_memory(index):
     # write index to file
@@ -13,3 +16,19 @@ def get_memory(index):
 
 def score(sub: numpy.ndarray, base: numpy.ndarray):
     return numpy.mean([1 if i in sub else 0 for i in base[0]])
+
+class ExperimentResult:
+    def __init__(self, memory: int):
+        self.memory = memory
+        self.times = []
+        self.accuracies = []
+
+def runExperiment(index, query: numpy.ndarray, k: int, baselineDocs: numpy.ndarray) -> ExperimentResult:
+    result = ExperimentResult(get_memory(index))
+    for i in range(TIMES):
+        now = timeit.default_timer()
+        _, docs = index.search(query, k)
+        result.times.append(timeit.default_timer() - now)
+        result.accuracies.append(score(docs, baselineDocs))
+        result.docs = docs
+    return result
