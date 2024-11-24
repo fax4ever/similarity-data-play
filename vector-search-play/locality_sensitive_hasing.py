@@ -17,4 +17,4 @@ class LocalitySensitiveHasing:
         self.experiment = helper.runExperiment(self.index, query, k, base)
         print("index memory:", self.experiment.memory)
         print("query times:", self.experiment.times)
-        print("query accuracies:", self.experiment.accuracies)    
+        print("query accuracies:", self.experiment.accuracies)

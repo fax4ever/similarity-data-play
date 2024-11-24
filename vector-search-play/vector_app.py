@@ -7,6 +7,7 @@ from small_world_graph import SmallWorldGraph
 from vector_quantization import VectorQuantization
 from product_quantization import ProductQuantization
 from inverted_file_product_quantization import InvertedFileProductQuantization
+from prettytable import PrettyTable 
 
 def main():
     args = sys.argv[1:]
@@ -58,5 +59,22 @@ def main():
     invertedFileProductQuantization.indexing(data)
     invertedFileProductQuantization.query(query, k, accuracyBase)
 
+    myTable = PrettyTable(["Algorithm", "Index size", "Query time avg.", "Query time std. dev.", "Accuracy"])
+    myTable.add_row(["Locality Sensitive Hasing", localitySensitiveHasing.experiment.memory, 
+                     localitySensitiveHasing.experiment.time_mean(), localitySensitiveHasing.experiment.time_std(), 
+                     localitySensitiveHasing.experiment.accuracy()])
+    myTable.add_row(["Hierarchical Navigable Small World Graphs", smallWorldGraph.experiment.memory, 
+                     smallWorldGraph.experiment.time_mean(), smallWorldGraph.experiment.time_std(), 
+                     smallWorldGraph.experiment.accuracy()])
+    myTable.add_row(["Vector Quantization", vectorQuantization.experiment.memory, 
+                     vectorQuantization.experiment.time_mean(), vectorQuantization.experiment.time_std(), 
+                     vectorQuantization.experiment.accuracy()])
+    myTable.add_row(["ProductQuantization", productQuantization.experiment.memory, 
+                     productQuantization.experiment.time_mean(), productQuantization.experiment.time_std(), 
+                     productQuantization.experiment.accuracy()])
+    myTable.add_row(["Inverted File Product Quantization", invertedFileProductQuantization.experiment.memory, 
+                     invertedFileProductQuantization.experiment.time_mean(), invertedFileProductQuantization.experiment.time_std(), 
+                     invertedFileProductQuantization.experiment.accuracy()])
+    print(myTable)
 if __name__ == "__main__":
     main()

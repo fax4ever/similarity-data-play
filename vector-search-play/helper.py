@@ -22,6 +22,12 @@ class ExperimentResult:
         self.memory = memory
         self.times = []
         self.accuracies = []
+    def time_mean(self):
+        return numpy.array(self.times).mean()
+    def time_std(self):
+        return numpy.array(self.times).std()
+    def accuracy(self):
+        return numpy.array(self.accuracies).mean()    
 
 def runExperiment(index, query: numpy.ndarray, k: int, baselineDocs: numpy.ndarray) -> ExperimentResult:
     result = ExperimentResult(get_memory(index))
