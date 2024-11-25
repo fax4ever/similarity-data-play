@@ -22,6 +22,7 @@ class ExperimentResult:
         self.memory = memory
         self.times = []
         self.accuracies = []
+        self.kNN = []
     def time_mean(self):
         return numpy.array(self.times).mean()
     def time_std(self):
@@ -35,6 +36,8 @@ def runExperiment(index, queries: numpy.ndarray, k: int, baselineDocs: numpy.nda
         now = timeit.default_timer()
         _, docs = index.search(queries[0:1], k)
         result.times.append(timeit.default_timer() - now)
-        result.accuracies.append(score(docs, baselineDocs))
-        result.docs = docs
+        if baselineDocs.size != 0:
+            result.accuracies.append(score(docs, baselineDocs))
+        else:    
+            result.kNN.append(docs)
     return result

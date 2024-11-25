@@ -1,4 +1,5 @@
 import sys
+import numpy
 from dataset import Dataset
 from flat_cos_similarity import FlatCosSimilarity
 from flat_l2_distance import FlatL2Distance
@@ -31,9 +32,8 @@ def main():
 
     flatL2Distance = FlatL2Distance(dim)
     flatL2Distance.indexing(data)
-    flatL2Distance.query(queries, k)
-    accuracyBase = flatL2Distance.docIndexes
-    flatL2Distance.score(accuracyBase)
+    flatL2Distance.query(queries, k, numpy.array([]))
+    accuracyBase = flatL2Distance.experiment.kNN[0]
 
     flatCosSimilarity = FlatCosSimilarity(dim)
     flatCosSimilarity.indexing(data)
