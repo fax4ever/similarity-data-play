@@ -8,7 +8,8 @@ from small_world_graph import SmallWorldGraph
 from vector_quantization import VectorQuantization
 from product_quantization import ProductQuantization
 from inverted_file_product_quantization import InvertedFileProductQuantization
-from prettytable import PrettyTable 
+from prettytable import PrettyTable
+from helper import TIMES
 
 def main():
     args = sys.argv[1:]
@@ -33,7 +34,7 @@ def main():
     flatL2Distance = FlatL2Distance(dim)
     flatL2Distance.indexing(data)
     flatL2Distance.query(queries, k, numpy.array([]))
-    accuracyBase = flatL2Distance.experiment.kNN[0]
+    accuracyBase = numpy.array(flatL2Distance.experiment.kNN).reshape(TIMES, 100)
 
     flatCosSimilarity = FlatCosSimilarity(dim)
     flatCosSimilarity.indexing(data)
@@ -59,22 +60,22 @@ def main():
     invertedFileProductQuantization.indexing(data)
     invertedFileProductQuantization.query(queries, k, accuracyBase)
 
-    myTable = PrettyTable(["Algorithm", "Index size", "Query time avg.", "Query time std. dev.", "Accuracy"])
+    myTable = PrettyTable(["Algorithm", "Index size", "Query time avg.", "Query time std. dev.", "Accuracy avg.", "Accuracy std. dev."])
     myTable.add_row(["Locality Sensitive Hasing", localitySensitiveHasing.experiment.memory, 
                      localitySensitiveHasing.experiment.time_mean(), localitySensitiveHasing.experiment.time_std(), 
-                     localitySensitiveHasing.experiment.accuracy()])
+                     localitySensitiveHasing.experiment.accuracy_mean(), localitySensitiveHasing.experiment.accuracy_std()])
     myTable.add_row(["Hierarchical Navigable Small World Graphs", smallWorldGraph.experiment.memory, 
                      smallWorldGraph.experiment.time_mean(), smallWorldGraph.experiment.time_std(), 
-                     smallWorldGraph.experiment.accuracy()])
+                     smallWorldGraph.experiment.accuracy_mean(), smallWorldGraph.experiment.accuracy_std()])
     myTable.add_row(["Vector Quantization", vectorQuantization.experiment.memory, 
                      vectorQuantization.experiment.time_mean(), vectorQuantization.experiment.time_std(), 
-                     vectorQuantization.experiment.accuracy()])
+                     vectorQuantization.experiment.accuracy_mean(), vectorQuantization.experiment.accuracy_std()])
     myTable.add_row(["ProductQuantization", productQuantization.experiment.memory, 
                      productQuantization.experiment.time_mean(), productQuantization.experiment.time_std(), 
-                     productQuantization.experiment.accuracy()])
+                     productQuantization.experiment.accuracy_mean(), productQuantization.experiment.accuracy_std()])
     myTable.add_row(["Inverted File Product Quantization", invertedFileProductQuantization.experiment.memory, 
                      invertedFileProductQuantization.experiment.time_mean(), invertedFileProductQuantization.experiment.time_std(), 
-                     invertedFileProductQuantization.experiment.accuracy()])
+                     invertedFileProductQuantization.experiment.accuracy_mean(), invertedFileProductQuantization.experiment.accuracy_std()])
     print(myTable)
 if __name__ == "__main__":
     main()

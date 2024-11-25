@@ -3,7 +3,7 @@ import os
 import numpy
 import timeit 
 
-TIMES = 7
+TIMES = 100
 
 def get_memory(index):
     # write index to file
@@ -27,17 +27,19 @@ class ExperimentResult:
         return numpy.array(self.times).mean()
     def time_std(self):
         return numpy.array(self.times).std()
-    def accuracy(self):
-        return numpy.array(self.accuracies).mean()    
+    def accuracy_mean(self):
+        return numpy.array(self.accuracies).mean()
+    def accuracy_std(self):
+        return numpy.array(self.accuracies).std()    
 
 def runExperiment(index, queries: numpy.ndarray, k: int, baselineDocs: numpy.ndarray) -> ExperimentResult:
     result = ExperimentResult(get_memory(index))
     for i in range(TIMES):
         now = timeit.default_timer()
-        _, docs = index.search(queries[0:1], k)
+        _, docs = index.search(queries[i:i+1], k)
         result.times.append(timeit.default_timer() - now)
         if baselineDocs.size != 0:
-            result.accuracies.append(score(docs, baselineDocs))
+            result.accuracies.append(score(docs, baselineDocs[i:i+1]))
         else:    
             result.kNN.append(docs)
     return result
