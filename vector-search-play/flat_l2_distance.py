@@ -12,9 +12,9 @@ class FlatL2Distance:
         self.index.add(data)
         print("index size:", helper.get_memory(self.index))
 
-    def query(self, query: numpy.ndarray, k: int):
+    def query(self, queries: numpy.ndarray, k: int):
         start = timeit.default_timer()
-        self.distances, self.docIndexes = self.index.search(query, k)
+        self.distances, self.docIndexes = self.index.search(queries[0:1], k)
         print("query time:", timeit.default_timer() - start)
         print("knn doc indexes:", self.docIndexes)
         print("distances:", self.distances)

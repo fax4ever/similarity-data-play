@@ -17,8 +17,8 @@ class SmallWorldGraph:
         self.index.add(data)
         print("index size:", helper.get_memory(self.index))
 
-    def query(self, query: numpy.ndarray, k: int, base: numpy.ndarray):
-        self.experiment = helper.runExperiment(self.index, query, k, base)
+    def query(self, queries: numpy.ndarray, k: int, base: numpy.ndarray):
+        self.experiment = helper.runExperiment(self.index, queries, k, base)
         print("index memory:", self.experiment.memory)
         print("query times:", self.experiment.times)
         print("query accuracies:", self.experiment.accuracies)    

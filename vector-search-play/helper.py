@@ -29,11 +29,11 @@ class ExperimentResult:
     def accuracy(self):
         return numpy.array(self.accuracies).mean()    
 
-def runExperiment(index, query: numpy.ndarray, k: int, baselineDocs: numpy.ndarray) -> ExperimentResult:
+def runExperiment(index, queries: numpy.ndarray, k: int, baselineDocs: numpy.ndarray) -> ExperimentResult:
     result = ExperimentResult(get_memory(index))
     for i in range(TIMES):
         now = timeit.default_timer()
-        _, docs = index.search(query, k)
+        _, docs = index.search(queries[0:1], k)
         result.times.append(timeit.default_timer() - now)
         result.accuracies.append(score(docs, baselineDocs))
         result.docs = docs

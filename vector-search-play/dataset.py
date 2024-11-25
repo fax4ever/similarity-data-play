@@ -48,12 +48,11 @@ class Dataset:
         else:    
             return read_fvecs("./siftsmall/siftsmall_base.fvecs")
     
-    def query(self) -> numpy.ndarray:
+    def queries(self) -> numpy.ndarray:
         if self.large:
-            xq = read_fvecs('./sift/sift_query.fvecs')
+            return read_fvecs('./sift/sift_query.fvecs')
         else:
-            xq = read_fvecs('./siftsmall/siftsmall_query.fvecs')    
-        return xq[0:1]
+            return read_fvecs('./siftsmall/siftsmall_query.fvecs')
     
     def dim(self) -> int:
         return 128

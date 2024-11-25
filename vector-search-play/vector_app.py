@@ -25,39 +25,39 @@ def main():
     
     dim = dataset.dim()
     data = dataset.data()
-    query = dataset.query()
+    queries = dataset.queries()
     k = 100  # number of nearest neighbors to return
-    print("data shape:", data.shape, "query shape:", query.shape)
+    print("data shape:", data.shape, "queries shape:", queries.shape)
 
     flatL2Distance = FlatL2Distance(dim)
     flatL2Distance.indexing(data)
-    flatL2Distance.query(query, k)
+    flatL2Distance.query(queries, k)
     accuracyBase = flatL2Distance.docIndexes
     flatL2Distance.score(accuracyBase)
 
     flatCosSimilarity = FlatCosSimilarity(dim)
     flatCosSimilarity.indexing(data)
-    flatCosSimilarity.query(query, k, accuracyBase)
+    flatCosSimilarity.query(queries, k, accuracyBase)
     
     localitySensitiveHasing = LocalitySensitiveHasing(dim)
     localitySensitiveHasing.indexing(data)
-    localitySensitiveHasing.query(query, k, accuracyBase)
+    localitySensitiveHasing.query(queries, k, accuracyBase)
     
     smallWorldGraph = SmallWorldGraph(dim)
     smallWorldGraph.indexing(data)
-    smallWorldGraph.query(query, k, accuracyBase)
+    smallWorldGraph.query(queries, k, accuracyBase)
 
     vectorQuantization = VectorQuantization(dim)
     vectorQuantization.indexing(data)
-    vectorQuantization.query(query, k, accuracyBase)
+    vectorQuantization.query(queries, k, accuracyBase)
 
     productQuantization = ProductQuantization(dim)
     productQuantization.indexing(data)
-    productQuantization.query(query, k, accuracyBase)
+    productQuantization.query(queries, k, accuracyBase)
 
     invertedFileProductQuantization = InvertedFileProductQuantization(dim)
     invertedFileProductQuantization.indexing(data)
-    invertedFileProductQuantization.query(query, k, accuracyBase)
+    invertedFileProductQuantization.query(queries, k, accuracyBase)
 
     myTable = PrettyTable(["Algorithm", "Index size", "Query time avg.", "Query time std. dev.", "Accuracy"])
     myTable.add_row(["Locality Sensitive Hasing", localitySensitiveHasing.experiment.memory, 
