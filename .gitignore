@@ -165,3 +165,14 @@ vector-search-play/sift.tar.gz
 vector-search-play/sift/*
 vector-search-play/siftsmall.tar.gz
 vector-search-play/siftsmall/*
+
+dimensionality-reduction/ml-latest-small/*
+dimensionality-reduction/ml-latest-small.zip
+dimensionality-reduction/flud.jpg
+
+# ignore IDEA files
+*.iml
+*.ipr
+*.iws
+.idea/*
+.gitignore
