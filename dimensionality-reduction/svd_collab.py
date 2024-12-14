@@ -76,7 +76,7 @@ def truncatedSVD(ratings: pd.DataFrame, movies: pd.DataFrame):
 
 def main():
     dataset = Dataset(False)
-    #dataset.download()
+    dataset.download()
     ratings = dataset.ratings()
     movies = dataset.movies()
     print(ratings)
