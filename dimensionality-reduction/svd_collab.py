@@ -58,9 +58,9 @@ def truncatedSVD(ratings: pd.DataFrame, movies: pd.DataFrame):
     X = svd.fit_transform(X)
 
     explained_variance_ratio = svd.explained_variance_ratio_
-    #plt.plot(explained_variance_ratio)
-    #plt.title('Singular values')
-    #plt.show()
+    plt.plot(explained_variance_ratio)
+    plt.title('Singular values')
+    plt.show()
 
     X = X[:,:20]
     print(X.shape)

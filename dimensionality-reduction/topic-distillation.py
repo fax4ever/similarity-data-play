@@ -6,10 +6,11 @@ from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn import metrics
+from sklearn.decomposition import TruncatedSVD
 from time import time
+import matplotlib.pyplot as plt
 
 CATEGORIES : list = ['comp.graphics', 'rec.motorcycles', 'rec.sport.baseball', 'sci.space', 'talk.religion.misc']
-K : int = len(CATEGORIES) # The number of clusters will be equal to the number of categories
 
 def printMetrics(labels: np.ndarray, X: np.ndarray, km: KMeans):
     print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels, km.labels_))
@@ -19,6 +20,24 @@ def printMetrics(labels: np.ndarray, X: np.ndarray, km: KMeans):
         % metrics.adjusted_rand_score(labels, km.labels_))
     print("Silhouette Coefficient: %0.3f"
         % metrics.silhouette_score(X, km.labels_, sample_size=1000))
+    
+def showResults(centroids: np.ndarray, vectorizer: TfidfVectorizer, true_k: 3):
+    terms = vectorizer.get_feature_names_out()
+    for i in range(true_k):
+        print("Cluster %d:" % i, end='')
+        for ind in centroids[i, :20]:
+            print(' %s' % terms[ind], end='')
+        print()    
+
+def kMean(true_k: int, labels, X, vectorizer):
+    km = KMeans(n_clusters=true_k, init='k-means++', n_init=20, max_iter=100)
+    t0 = time()
+    km.fit(X)
+    print("done in %0.3fs" % (time() - t0))
+    printMetrics(labels, X, km)
+
+    centroids = km.cluster_centers_.argsort()[:, ::-1] ## Indices of largest centroids' entries in descending order
+    showResults(centroids, vectorizer, true_k)
 
 def main():
     print("Loading 20 newsgroups dataset for categories: ", CATEGORIES)
@@ -51,11 +70,19 @@ def main():
     X: np.array = vectorizer.fit_transform(dataset.data).toarray()
     print("X: documents (rows) x terms (columns):", X.shape)
 
-    km = KMeans(n_clusters=true_k, init='k-means++', n_init=20, max_iter=100)
-    t0 = time()
-    km.fit(X)
-    print("done in %0.3fs" % (time() - t0))
-    printMetrics(labels, X, km)
+    # Part I
+    kMean(true_k, labels, X, vectorizer)
+
+    # Part II
+    svd = TruncatedSVD(n_components=10, n_iter=100, random_state=42)
+    sample_decomp = svd.fit_transform(X)
+    Sigma = svd.singular_values_
+    U = sample_decomp/Sigma
+    V_T = svd.components_
+
+    plt.plot(Sigma)
+    plt.title('Singular values')
+    plt.show()
 
 if __name__ == "__main__":
     main()
