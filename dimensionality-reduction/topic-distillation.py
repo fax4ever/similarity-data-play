@@ -9,6 +9,7 @@ from sklearn import metrics
 from sklearn.decomposition import TruncatedSVD
 from time import time
 import matplotlib.pyplot as plt
+import pandas as pd
 
 CATEGORIES : list = ['comp.graphics', 'rec.motorcycles', 'rec.sport.baseball', 'sci.space', 'talk.religion.misc']
 
@@ -21,15 +22,14 @@ def printMetrics(labels: np.ndarray, X: np.ndarray, km: KMeans):
     print("Silhouette Coefficient: %0.3f"
         % metrics.silhouette_score(X, km.labels_, sample_size=1000))
     
-def showResults(centroids: np.ndarray, vectorizer: TfidfVectorizer, true_k: 3):
-    terms = vectorizer.get_feature_names_out()
+def showResults(centroids: np.ndarray, terms: np.array, true_k: 3):
     for i in range(true_k):
         print("Cluster %d:" % i, end='')
         for ind in centroids[i, :20]:
             print(' %s' % terms[ind], end='')
         print()    
 
-def kMean(true_k: int, labels, X, vectorizer):
+def kMean(true_k: int, labels, X, terms: np.array):
     km = KMeans(n_clusters=true_k, init='k-means++', n_init=20, max_iter=100)
     t0 = time()
     km.fit(X)
@@ -37,7 +37,7 @@ def kMean(true_k: int, labels, X, vectorizer):
     printMetrics(labels, X, km)
 
     centroids = km.cluster_centers_.argsort()[:, ::-1] ## Indices of largest centroids' entries in descending order
-    showResults(centroids, vectorizer, true_k)
+    showResults(centroids, terms, true_k)
 
 def main():
     print("Loading 20 newsgroups dataset for categories: ", CATEGORIES)
@@ -69,20 +69,38 @@ def main():
     vectorizer = TfidfVectorizer(stop_words='english') ## Corpus is in English
     X: np.array = vectorizer.fit_transform(dataset.data).toarray()
     print("X: documents (rows) x terms (columns):", X.shape)
+    terms: np.array = vectorizer.get_feature_names_out()
 
     # Part I
-    kMean(true_k, labels, X, vectorizer)
+    kMean(true_k, labels, X, terms)
 
     # Part II
-    svd = TruncatedSVD(n_components=10, n_iter=100, random_state=42)
-    sample_decomp = svd.fit_transform(X)
+    svd = TruncatedSVD(n_components=100, n_iter=50, random_state=42)
+    X = svd.fit_transform(X)
     Sigma = svd.singular_values_
-    U = sample_decomp/Sigma
-    V_T = svd.components_
+    V = svd.components_
 
     plt.plot(Sigma)
     plt.title('Singular values')
     plt.show()
+
+    X = X[:,:true_k]
+    print("U * Sigma", X.shape)
+    V = V[:true_k]
+    print("V", V.shape)
+
+    data = pd.DataFrame(V, columns=terms)
+    print("data\n", data)
+    data_squared = data
+    print("data squared\n", data_squared)
+    
+    for i in range(true_k):
+        component: pd.Series = data_squared.iloc[i].sort_values(ascending=False).head(20)
+        print(list(component.axes[0]))
+
+    X = (X).dot(V)
+    # Part III
+    kMean(true_k, labels, X, terms)
 
 if __name__ == "__main__":
     main()

@@ -65,8 +65,9 @@ def truncatedSVD(ratings: pd.DataFrame, movies: pd.DataFrame):
     X = X[:,:20]
     print(X.shape)
 
-    V = svd.components_
-    data = pd.DataFrame(V[:20], columns=movies.loc[movie_idx_map.keys()].title)
+    V = svd.components_[:20]
+    print(V.shape)
+    data = pd.DataFrame(V, columns=movies.loc[movie_idx_map.keys()].title)
     print(data)
 
     g = (data - data[['Toy Story (1995)']].values).pow(2).mean().sort_values().head(10)
