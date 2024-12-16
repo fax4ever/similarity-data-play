@@ -48,8 +48,6 @@ def main():
     print("True K: ", true_k)
 
     textVectorizer = TextVectorizer(data)
-    textVectorizer.lemmatizeDocs()
-    textVectorizer.vectorizeDocs()
     X: np.array = textVectorizer.X
     terms: np.array = textVectorizer.terms
 
