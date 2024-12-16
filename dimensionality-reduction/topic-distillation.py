@@ -27,7 +27,7 @@ def showResults(centroids: np.ndarray, terms: np.array, true_k: 3):
         print()    
 
 def kMean(true_k: int, labels, X, terms: np.array):
-    km = KMeans(n_clusters=true_k, init='k-means++', n_init=20, max_iter=100)
+    km = KMeans(n_clusters=true_k, init='k-means++', n_init=20, max_iter=100, random_state=42)
     t0 = time()
     km.fit(X)
     print("done in %0.3fs" % (time() - t0))

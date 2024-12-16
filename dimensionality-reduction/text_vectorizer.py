@@ -2,7 +2,9 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
+import string
 
 class TextVectorizer:
     def __init__(self, documents : list):
@@ -24,7 +26,12 @@ class TextVectorizer:
             self.lemmDocs.append(lemmatized_doc)
 
     def vectorizeDocs(self):
-        vectorizer = TfidfVectorizer(stop_words='english') ## Corpus is in English
+        stop_words = list(set(stopwords.words("english")))
+        stop_words += ['wa', 'just', 've', 'ha', 'would', 'one', 'like', 'get', 
+                       'could', 'also', 'much']
+        print(stop_words)
+
+        vectorizer = TfidfVectorizer(lowercase=True, stop_words=stop_words) ## Corpus is in English
         self.X: np.array = vectorizer.fit_transform(self.lemmDocs).toarray()
         print("X: documents (rows) x terms (columns):", self.X.shape)
         self.terms: np.array = vectorizer.get_feature_names_out()
