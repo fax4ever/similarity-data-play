@@ -1,15 +1,12 @@
 import numpy as np
-import nltk
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
 from sklearn.datasets import fetch_20newsgroups
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn import metrics
 from sklearn.decomposition import TruncatedSVD
 from time import time
 import matplotlib.pyplot as plt
 import pandas as pd
+from text_vectorizer import TextVectorizer
 
 CATEGORIES : list = ['comp.graphics', 'rec.motorcycles', 'rec.sport.baseball', 'sci.space', 'talk.religion.misc']
 
@@ -50,26 +47,11 @@ def main():
     true_k = len(np.unique(labels)) ## This should be 5 in this example
     print("True K: ", true_k)
 
-    # First, we download the necessary NLTK resources
-    nltk.download('stopwords')
-    nltk.download('wordnet')
-    nltk.download('punkt')
-    nltk.download('omw-1.4')
-    nltk.download('punkt_tab')
-
-     # We next perform lemmatization
-    lemmatizer = WordNetLemmatizer()
-    for i in range(len(data)):
-        word_list = word_tokenize(data[i])
-        lemmatized_doc = ""
-        for word in word_list:
-            lemmatized_doc = lemmatized_doc + " " + lemmatizer.lemmatize(word)
-        data[i] = lemmatized_doc
-
-    vectorizer = TfidfVectorizer(stop_words='english') ## Corpus is in English
-    X: np.array = vectorizer.fit_transform(dataset.data).toarray()
-    print("X: documents (rows) x terms (columns):", X.shape)
-    terms: np.array = vectorizer.get_feature_names_out()
+    textVectorizer = TextVectorizer(data)
+    textVectorizer.lemmatizeDocs()
+    textVectorizer.vectorizeDocs()
+    X: np.array = textVectorizer.X
+    terms: np.array = textVectorizer.terms
 
     # Part I
     kMean(true_k, labels, X, terms)
