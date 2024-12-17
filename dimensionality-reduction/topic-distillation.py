@@ -39,8 +39,8 @@ def kMean(true_k: int, labels, X, terms: np.array):
 
 def main():
     print("Loading 20 newsgroups dataset for categories: ", CATEGORIES)
-    dataset = fetch_20newsgroups(subset='all', categories=CATEGORIES, shuffle=False, 
-                                 remove=('headers', 'footers', 'quotes'))
+    dataset = fetch_20newsgroups(subset='all', categories=CATEGORIES, shuffle=True, 
+                                 remove=('headers', 'footers', 'quotes'), random_state=42)
     data : list = dataset.data
     print("Imported data: ", type(data), len(data))
     labels : np.array = dataset.target
