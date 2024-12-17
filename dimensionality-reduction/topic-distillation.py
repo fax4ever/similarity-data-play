@@ -7,6 +7,7 @@ from time import time
 import matplotlib.pyplot as plt
 import pandas as pd
 from text_vectorizer import TextVectorizer
+from lsa import LatentSemanticAnalysis
 
 CATEGORIES : list = ['comp.graphics', 'rec.motorcycles', 'rec.sport.baseball', 'sci.space', 'talk.religion.misc']
 
@@ -55,30 +56,9 @@ def main():
     kMean(true_k, labels, X, terms)
 
     # Part II
-    svd = TruncatedSVD(n_components=100, n_iter=50, random_state=42)
-    X = svd.fit_transform(X)
-    Sigma = svd.singular_values_
-    V = svd.components_
+    lsa = LatentSemanticAnalysis(100, 5, X, terms)
+    X = lsa.X
 
-    plt.plot(Sigma)
-    plt.title('Singular values')
-    plt.show()
-
-    X = X[:,:true_k]
-    print("U * Sigma", X.shape)
-    V = V[:true_k]
-    print("V", V.shape)
-
-    data = pd.DataFrame(V, columns=terms)
-    print("data\n", data)
-    data_squared = data
-    print("data squared\n", data_squared)
-    
-    for i in range(true_k):
-        component: pd.Series = data_squared.iloc[i].sort_values(ascending=False).head(20)
-        print(list(component.axes[0]))
-
-    X = (X).dot(V)
     # Part III
     kMean(true_k, labels, X, terms)
 
