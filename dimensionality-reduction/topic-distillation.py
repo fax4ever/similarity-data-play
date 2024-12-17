@@ -56,7 +56,7 @@ def main():
     kMean(true_k, labels, X, terms)
 
     # Part II
-    lsa = LatentSemanticAnalysis(100, 5, X, terms)
+    lsa = LatentSemanticAnalysis(100, 5, X, terms, labels)
     X = lsa.X
 
     # Part III
