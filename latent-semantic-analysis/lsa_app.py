@@ -4,7 +4,6 @@ from sklearn.datasets import fetch_20newsgroups
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from evaluation import Evaluation
-from single_value_dec import SingleValueDecomposition
 from lsa import LatentSemanticAnalysis
 
 categories = ['comp.graphics', 
@@ -12,6 +11,17 @@ categories = ['comp.graphics',
               'rec.sport.baseball', 
               'sci.space', 
               'talk.religion.misc']
+
+def showResults(centroids: np.ndarray, terms: np.array, true_k: 3):
+    for i in range(true_k):
+        print("Cluster %d:" % i, end='')
+        for ind in centroids[i, :20]:
+            print(' %s' % terms[ind], end='')
+        print()
+
+def showCentroids(km: KMeans, true_k: int, terms: np.array):
+    centroids = km.cluster_centers_.argsort()[:, ::-1] ## Indices of largest centroids' entries in descending order
+    showResults(centroids, terms, true_k)
 
 def main():
     # 1. Import the data
@@ -38,51 +48,28 @@ def main():
     print(f"vectorization done in {time() - t0:.3f} s")
     print(f"n_samples: {X_tfidf.shape[0]}, n_features: {X_tfidf.shape[1]}")
     print(f"non-zero-elem: {X_tfidf.nnz / np.prod(X_tfidf.shape):.3f}")
-
-    # 3. Execute the k-means on sparse matrix with single n_init
-    for seed in range(5):
-        kmeans = KMeans(
-            n_clusters=true_k,
-            max_iter=100,
-            n_init=1,
-            random_state=seed,
-        ).fit(X_tfidf)
-        cluster_ids, cluster_sizes = np.unique(kmeans.labels_, return_counts=True)
-        print(f"Number of elements assigned to each cluster: {cluster_sizes}")
-    print(
-        "True number of documents in each category according to the class labels: "
-        f"{category_sizes}"
-    )
+    terms: np.array = vectorizer.get_feature_names_out()
 
     # 3. Execute the k-means on sparse matrix with independent random initiations n_init
     kmeans = KMeans(
         n_clusters=true_k,
         max_iter=100,
-        n_init=5,
+        n_init=5, random_state=42
     )
     eval = Evaluation(labels)
     eval.fit_and_evaluate(kmeans, X_tfidf, name="KMeans\non tf-idf vectors")
+    showCentroids(kmeans, true_k, terms)
 
-    # 4. SVD
-    svd = SingleValueDecomposition(X_tfidf)
-    kmeans = KMeans(
-        n_clusters=true_k,
-        max_iter=100,
-        n_init=1,
-    )
-    eval = Evaluation(labels)
-    eval.fit_and_evaluate(kmeans, svd.X_lsa, name="KMeans\nwith LSA on tf-idf vectors")
-
-    # 5. LSA
-    terms: np.array = vectorizer.get_feature_names_out()
+    # 4. LSA
     lsa = LatentSemanticAnalysis(100, 5, X_tfidf, terms, labels)
     kmeans = KMeans(
         n_clusters=true_k,
         max_iter=100,
-        n_init=1,
+        n_init=5, random_state=42
     )
     eval = Evaluation(labels)
     eval.fit_and_evaluate(kmeans, lsa.X, name="KMeans\nwith LSA adv on tf-idf vectors")
+    showCentroids(kmeans, true_k, terms)
 
 if __name__ == "__main__":
     main()

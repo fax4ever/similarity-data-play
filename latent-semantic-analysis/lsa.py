@@ -4,20 +4,26 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn import metrics
+from sklearn.decomposition import TruncatedSVD
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import Normalizer
+from time import time
 
 class LatentSemanticAnalysis:
     def __init__(self, components: int, true_k: int, X: np.array, columns: np.array, labels):
-        self.svd = TruncatedSVD(n_components=components, n_iter=50, random_state=42)
-        X = self.svd.fit_transform(X)
-        Sigma = self.svd.singular_values_
-        V = self.svd.components_
-
+        self.lsa = make_pipeline(TruncatedSVD(n_components=100), Normalizer(copy=False))
+        t0 = time()
+        X = self.lsa.fit_transform(X)
+        print(f"LSA done in {time() - t0:.3f} s")
+        Sigma = self.lsa[0].singular_values_
+        V = self.lsa[0].components_
+        
         plt.plot(Sigma)
         plt.title('Singular values')
         plt.show()
 
-        # According to plot we have a elbow of a curve approx around m=10
-        BASE_M = 5
+        # According to plot we have a elbow of a curve approx around m=9
+        BASE_M = 4
         bestM = -1
         bestARS = 0
         for i in range(10):
