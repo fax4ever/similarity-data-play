@@ -5,6 +5,7 @@ from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from evaluation import Evaluation
 from single_value_dec import SingleValueDecomposition
+from lsa import LatentSemanticAnalysis
 
 categories = ['comp.graphics', 
               'rec.motorcycles', 
@@ -71,6 +72,17 @@ def main():
     )
     eval = Evaluation(labels)
     eval.fit_and_evaluate(kmeans, svd.X_lsa, name="KMeans\nwith LSA on tf-idf vectors")
+
+    # 5. LSA
+    terms: np.array = vectorizer.get_feature_names_out()
+    lsa = LatentSemanticAnalysis(100, 5, X_tfidf, terms, labels)
+    kmeans = KMeans(
+        n_clusters=true_k,
+        max_iter=100,
+        n_init=1,
+    )
+    eval = Evaluation(labels)
+    eval.fit_and_evaluate(kmeans, lsa.X, name="KMeans\nwith LSA adv on tf-idf vectors")
 
 if __name__ == "__main__":
     main()
