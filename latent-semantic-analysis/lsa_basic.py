@@ -7,7 +7,7 @@ from sklearn.preprocessing import Normalizer
 from time import time
 
 class LSA:
-    def __init__(self, m: int, X: np.array, columns: np.array):
+    def __init__(self, X: np.array):
         self.pipe = make_pipeline(TruncatedSVD(n_components=100, random_state=1224), Normalizer(copy=False))
         t0 = time()
         self.USigma = self.pipe.fit_transform(X)
@@ -15,11 +15,12 @@ class LSA:
         print(f"LSA done in {time() - t0:.3f} s")
         Sigma = self.pipe[0].singular_values_
         print("Sigma", Sigma.shape)
-        V = self.pipe[0].components_
-        print("V", V.shape)
-    
+        self.V = self.pipe[0].components_
+        print("V", self.V.shape)
+
+    def printMostImportantKeywords(self, m: int, columns: np.array):    
         # Applying only **m** components
-        Vm = V[:m]
+        Vm = self.V[:m]
         print("V, using m components", Vm.shape)
         data = pd.DataFrame(Vm, columns=columns)
         print("data\n", data)

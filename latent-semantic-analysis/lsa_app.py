@@ -63,7 +63,8 @@ def main():
     showCentroids(kmeans, true_k, terms)
 
     # 4. LSA only with SVD
-    lsa = LSA(true_k, X_tfidf, terms)
+    lsa = LSA(X_tfidf)
+    lsa.printMostImportantKeywords(true_k, terms)
 
     # 5. LSA + k-means
     lsa = LatentSemanticAnalysis(lsa, true_k, labels)
