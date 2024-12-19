@@ -13,7 +13,7 @@ categories = ['comp.graphics',
               'sci.space', 
               'talk.religion.misc']
 
-def showResults(centroids: np.ndarray, terms: np.array, true_k: 3):
+def showResults(centroids: np.ndarray, terms: np.array, true_k: int):
     for i in range(true_k):
         print("Cluster %d:" % i, end='')
         for ind in centroids[i, :20]:
@@ -40,14 +40,14 @@ def main():
 
     # 2. Vectorize the data
     vectorizer = TfidfVectorizer(
-        max_df=0.5, # ignoring terms that appear in more than 50% of the documents
-        min_df=5,   # ignoring terms that are not present in at least 5 documents
-        stop_words="english",
+    max_df=0.5, # ignoring terms that appear in more than 50% of the documents
+    min_df=5,   # ignoring terms that are not present in at least 5 documents
+    stop_words="english"
     )
     X_tfidf = vectorizer.fit_transform(dataset.data)
-    print(f"n_samples: {X_tfidf.shape[0]}, n_features: {X_tfidf.shape[1]}")
-    print(f"the table is very sparse. Only around the {X_tfidf.nnz * 100 / np.prod(X_tfidf.shape):.3f}% of the cells are non zeros.")
     terms: np.array = vectorizer.get_feature_names_out()
+    print(f"documents: {X_tfidf.shape[0]}, terms: {X_tfidf.shape[1]} {terms.shape} {terms}")
+    print(f"the table is very sparse. Only around the {X_tfidf.nnz * 100 / np.prod(X_tfidf.shape):.3f}% of the cells are non zeros.")
 
     # 3. Execute the k-means on sparse matrix with independent random initiations n_init
     t0 = time()

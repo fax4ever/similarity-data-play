@@ -8,7 +8,7 @@ from time import time
 
 class LSA:
     def __init__(self, m: int, X: np.array, columns: np.array):
-        self.pipe = make_pipeline(TruncatedSVD(n_components=100), Normalizer(copy=False))
+        self.pipe = make_pipeline(TruncatedSVD(n_components=100, random_state=1224), Normalizer(copy=False))
         t0 = time()
         self.USigma = self.pipe.fit_transform(X)
         print("U * Sigma", self.USigma.shape)
