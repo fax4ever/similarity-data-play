@@ -4,8 +4,8 @@ from sklearn.datasets import fetch_20newsgroups
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import metrics
-from evaluation import Evaluation
 from lsa import LatentSemanticAnalysis
+from lsa_basic import LSA
 
 categories = ['comp.graphics', 
               'rec.motorcycles', 
@@ -62,15 +62,21 @@ def main():
     print("adjusted random score: ", adjustedRandomScore)
     showCentroids(kmeans, true_k, terms)
 
-    # 4. LSA
-    lsa = LatentSemanticAnalysis(100, 5, X_tfidf, terms, labels)
+    # 4. LSA only with SVD
+    lsa = LSA(true_k, X_tfidf, terms)
+
+    # 5. LSA + k-means
+    lsa = LatentSemanticAnalysis(lsa, true_k, labels)
+    t0 = time()
     kmeans = KMeans(
         n_clusters=true_k,
         max_iter=100,
-        n_init=5, random_state=42
+        n_init=5, random_state=1224
     )
-    eval = Evaluation(labels)
-    eval.fit_and_evaluate(kmeans, lsa.X, name="KMeans\nwith LSA adv on tf-idf vectors")
+    kmeans.fit(lsa.X)
+    adjustedRandomScore = metrics.adjusted_rand_score(labels, kmeans.labels_)
+    print("k-means time: ", time() - t0)
+    print("adjusted random score: ", adjustedRandomScore)
     showCentroids(kmeans, true_k, terms)
 
 if __name__ == "__main__":

@@ -1,22 +1,15 @@
-import numpy as np
 from sklearn.decomposition import TruncatedSVD
-import matplotlib.pyplot as plt
-import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn import metrics
-from sklearn.decomposition import TruncatedSVD
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import Normalizer
 from time import time
+from lsa_basic import LSA
+import matplotlib.pyplot as plt
 
 class LatentSemanticAnalysis:
-    def __init__(self, components: int, true_k: int, X: np.array, columns: np.array, labels):
-        self.lsa = make_pipeline(TruncatedSVD(n_components=100), Normalizer(copy=False))
-        t0 = time()
-        X = self.lsa.fit_transform(X)
-        print(f"LSA done in {time() - t0:.3f} s")
-        Sigma = self.lsa[0].singular_values_
-        V = self.lsa[0].components_
+    def __init__(self, lsa: LSA, true_k: int, labels):
+        USigma = lsa.USigma
+        Sigma = lsa.pipe[0].singular_values_
+        V = lsa.pipe[0].components_
         
         plt.plot(Sigma)
         plt.title('Singular values')
@@ -28,32 +21,19 @@ class LatentSemanticAnalysis:
         bestARS = 0
         for i in range(10):
             m = BASE_M + i
-            Xi = X[:,:m]
+            USigmai = USigma[:,:m]
             Vi = V[:m]
-            Xii = (Xi).dot(Vi)
-            km = KMeans(n_clusters=true_k, init='k-means++', n_init=5, max_iter=100, random_state=42)
-            km.fit(Xii)
+            Xi = (USigmai).dot(Vi)
+            km = KMeans(n_clusters=true_k, init='k-means++', n_init=5, max_iter=100, random_state=1224)
+            km.fit(Xi)
             ars = metrics.adjusted_rand_score(labels, km.labels_)
             print("m components ", m, " - ARS ", ars)
             if (ars > bestARS):
                 bestARS = ars
                 bestM = m
         
-        X = X[:,:bestM]
-        print("U * Sigma", X.shape)
+        USigma = USigma[:,:bestM]
+        print("U * Sigma", USigma.shape)
         V = V[:bestM]
         print("V", V.shape)
-
-        data = pd.DataFrame(V, columns=columns)
-        print("data\n", data)
-        data_squared = data
-        print("data squared\n", data_squared)
-        
-        for i in range(bestM):
-            print("component ", i)
-            component: pd.Series = data_squared.iloc[i].sort_values(ascending=False).head(20)
-            negative: pd.Series = data_squared.iloc[i].sort_values(ascending=True).head(20)
-            print("most positive terms:", list(component.axes[0]))
-            print("most negative terms:", list(negative.axes[0]))
-            
-        self.X = (X).dot(V)
+        self.X = (USigma).dot(V)
