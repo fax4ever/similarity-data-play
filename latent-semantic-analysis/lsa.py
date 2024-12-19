@@ -33,7 +33,7 @@ class LatentSemanticAnalysis:
             Xii = (Xi).dot(Vi)
             km = KMeans(n_clusters=true_k, init='k-means++', n_init=5, max_iter=100, random_state=42)
             km.fit(Xii)
-            ars = metrics.adjusted_rand_score(km.labels_, labels)
+            ars = metrics.adjusted_rand_score(labels, km.labels_)
             print("m components ", m, " - ARS ", ars)
             if (ars > bestARS):
                 bestARS = ars
@@ -50,7 +50,10 @@ class LatentSemanticAnalysis:
         print("data squared\n", data_squared)
         
         for i in range(bestM):
+            print("component ", i)
             component: pd.Series = data_squared.iloc[i].sort_values(ascending=False).head(20)
-            print(list(component.axes[0]))
+            negative: pd.Series = data_squared.iloc[i].sort_values(ascending=True).head(20)
+            print("most positive terms:", list(component.axes[0]))
+            print("most negative terms:", list(negative.axes[0]))
             
         self.X = (X).dot(V)

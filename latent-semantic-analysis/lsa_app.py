@@ -3,6 +3,7 @@ from time import time
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn import metrics
 from evaluation import Evaluation
 from lsa import LatentSemanticAnalysis
 
@@ -30,12 +31,12 @@ def main():
         subset="all",
         categories=categories,
         shuffle=True,
-        random_state=42,
+        random_state=1224,
     )
     labels = dataset.target
     unique_labels, category_sizes = np.unique(labels, return_counts=True)
     true_k = unique_labels.shape[0]
-    print(f"{len(dataset.data)} documents - {true_k} categories")
+    print(f"{len(dataset.data)} documents - {true_k} categories: {category_sizes}")
 
     # 2. Vectorize the data
     vectorizer = TfidfVectorizer(
@@ -43,21 +44,22 @@ def main():
         min_df=5,   # ignoring terms that are not present in at least 5 documents
         stop_words="english",
     )
-    t0 = time()
     X_tfidf = vectorizer.fit_transform(dataset.data)
-    print(f"vectorization done in {time() - t0:.3f} s")
     print(f"n_samples: {X_tfidf.shape[0]}, n_features: {X_tfidf.shape[1]}")
-    print(f"non-zero-elem: {X_tfidf.nnz / np.prod(X_tfidf.shape):.3f}")
+    print(f"the table is very sparse. Only around the {X_tfidf.nnz * 100 / np.prod(X_tfidf.shape):.3f}% of the cells are non zeros.")
     terms: np.array = vectorizer.get_feature_names_out()
 
     # 3. Execute the k-means on sparse matrix with independent random initiations n_init
+    t0 = time()
     kmeans = KMeans(
         n_clusters=true_k,
         max_iter=100,
-        n_init=5, random_state=42
+        n_init=20, random_state=1224
     )
-    eval = Evaluation(labels)
-    eval.fit_and_evaluate(kmeans, X_tfidf, name="KMeans\non tf-idf vectors")
+    kmeans.fit(X_tfidf)
+    adjustedRandomScore = metrics.adjusted_rand_score(labels, kmeans.labels_)
+    print("k-means time: ", time() - t0)
+    print("adjusted random score: ", adjustedRandomScore)
     showCentroids(kmeans, true_k, terms)
 
     # 4. LSA
