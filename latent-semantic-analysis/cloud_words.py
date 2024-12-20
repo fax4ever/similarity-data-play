@@ -9,12 +9,9 @@ class WordCloudImage:
         n = len(words)
         for i in range(n):
             word = words[i]
-            freq = series[i]
+            freq = series.iloc[i]
             self.frequences[word] = freq
         pass
-
-    def printFrequences(self):
-        print(self.frequences)
 
     def show(self):
         wc = WordCloud(background_color="white", max_words=20)

@@ -23,8 +23,6 @@ class LSA:
         Vm = self.V[:m]
         print("V, using m components", Vm.shape)
         data = pd.DataFrame(Vm, columns=terms)
-        print("data\n", data)
-        
         for i in range(m):
             print("component ", i)
             positives: pd.Series = data.iloc[i].sort_values(ascending=False).head(20)
