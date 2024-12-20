@@ -40,9 +40,9 @@ def main():
 
     # 2. Vectorize the data
     vectorizer = TfidfVectorizer(
-    max_df=0.5, # ignoring terms that appear in more than 50% of the documents
-    min_df=5,   # ignoring terms that are not present in at least 5 documents
-    stop_words="english"
+        max_df=0.5, # ignoring terms that appear in more than 50% of the documents
+        min_df=5,   # ignoring terms that are not present in at least 5 documents
+        stop_words="english"
     )
     X_tfidf = vectorizer.fit_transform(dataset.data)
     terms: np.array = vectorizer.get_feature_names_out()

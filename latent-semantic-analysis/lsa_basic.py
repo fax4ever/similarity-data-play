@@ -18,11 +18,11 @@ class LSA:
         self.V = self.pipe[0].components_
         print("V", self.V.shape)
 
-    def printMostImportantKeywords(self, m: int, columns: np.array):    
+    def printMostImportantKeywords(self, m: int, terms: np.array):    
         # Applying only **m** components
         Vm = self.V[:m]
         print("V, using m components", Vm.shape)
-        data = pd.DataFrame(Vm, columns=columns)
+        data = pd.DataFrame(Vm, columns=terms)
         print("data\n", data)
         
         for i in range(m):
