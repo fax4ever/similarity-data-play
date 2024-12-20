@@ -1,10 +1,10 @@
 import numpy as np
-from sklearn.decomposition import TruncatedSVD
 import pandas as pd
 from sklearn.decomposition import TruncatedSVD
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import Normalizer
 from time import time
+from cloud_words import WordCloudImage
 
 class LSA:
     def __init__(self, X: np.array):
@@ -28,6 +28,8 @@ class LSA:
         for i in range(m):
             print("component ", i)
             positives: pd.Series = data.iloc[i].sort_values(ascending=False).head(20)
-            print("most positive terms:", list(positives.axes[0]))
+            print("most positive terms:", *list(positives.axes[0]))
+            WordCloudImage(positives).show()
             negatives: pd.Series = data.iloc[i].sort_values(ascending=True).head(20)
-            print("most negative terms:", list(negatives.axes[0]))
+            print("most negative terms:", *list(negatives.axes[0]))
+            WordCloudImage(negatives).show()

@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from time import time
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.cluster import KMeans
@@ -6,6 +7,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import metrics
 from lsa import LatentSemanticAnalysis
 from lsa_basic import LSA
+from cloud_words import WordCloudImage
 
 categories = ['comp.graphics', 
               'rec.motorcycles', 
@@ -13,16 +15,13 @@ categories = ['comp.graphics',
               'sci.space', 
               'talk.religion.misc']
 
-def showResults(centroids: np.ndarray, terms: np.array, true_k: int):
-    for i in range(true_k):
-        print("Cluster %d:" % i, end='')
-        for ind in centroids[i, :20]:
-            print(' %s' % terms[ind], end='')
-        print()
-
 def showCentroids(km: KMeans, true_k: int, terms: np.array):
-    centroids = km.cluster_centers_.argsort()[:, ::-1] ## Indices of largest centroids' entries in descending order
-    showResults(centroids, terms, true_k)
+    data = pd.DataFrame(km.cluster_centers_, columns=terms)
+    print("data\n", data)
+    for i in range(true_k):
+        positives: pd.Series = data.iloc[i].sort_values(ascending=False).head(20)
+        print("Cluster", i, ":", *list(positives.axes[0]))
+        WordCloudImage(positives).show()
 
 def main():
     # 1. Import the data
