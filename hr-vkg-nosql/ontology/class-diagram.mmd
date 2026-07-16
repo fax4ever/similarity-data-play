@@ -1,0 +1,61 @@
+classDiagram
+    class Person {
+        -String personName
+        -String surname
+        -date dayOfBirth
+        -String phone
+        -String email
+    }
+
+    class Employee {
+        -integer employeeId
+    }
+
+    class Contractor
+
+    class Intern {
+        -double allowance
+    }
+
+    class Manager
+
+    class Director
+
+    class Contract {
+        -date startDate
+        -date endDate
+        -double salary
+    }
+
+    class Project {
+        -String projectName
+        -double budget
+    }
+
+    class Department {
+        -String departmentCode
+    }
+
+    class SkillWithLevel {
+        -String level
+    }
+
+    class Skill {
+        -String skillName
+        -String category
+    }
+
+    Person <|-- Employee : "{disjoint}"
+    Person <|-- Contractor : "{disjoint}"
+    Person <|-- Intern : "{disjoint}"
+    Employee <|-- Manager
+    Manager <|-- Director
+
+    Person --> "*" Contract : hasContract
+    Person --> "*" Project : worksOn
+    Employee --> "*" SkillWithLevel : hasSkillWithLevel
+    Project --> "*" SkillWithLevel : requiresSkill
+    SkillWithLevel --> "1" Skill : referencesSkill
+    Manager --> "*" Employee : manages
+    Department --> "1" Director : hasLeader
+    Department --> "*" Employee : containsEmployee

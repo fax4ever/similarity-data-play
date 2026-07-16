@@ -1,0 +1,138 @@
+Prefix: : <http://example.org/enterprise#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+Ontology: <http://example.org/enterprise>
+
+### Classes
+
+Class: Person
+
+Class: Employee
+    SubClassOf: Person
+
+Class: Contractor
+    SubClassOf: Person
+
+Class: Intern
+    SubClassOf: Person
+
+Class: Manager
+    SubClassOf: Employee
+
+Class: Director
+    SubClassOf: Manager
+
+Class: Contract
+
+Class: Project
+
+Class: Department
+
+Class: SkillWithLevel
+
+Class: Skill
+
+DisjointClasses: Employee, Contractor, Intern
+
+### Object Properties
+
+ObjectProperty: hasContract
+    Domain: Person
+    Range: Contract
+
+ObjectProperty: worksOn
+    Domain: Person
+    Range: Project
+
+ObjectProperty: hasSkillWithLevel
+    Domain: Employee
+    Range: SkillWithLevel
+
+ObjectProperty: requiresSkill
+    Domain: Project
+    Range: SkillWithLevel
+
+ObjectProperty: referencesSkill
+    Domain: SkillWithLevel
+    Range: Skill
+
+ObjectProperty: manages
+    Domain: Manager
+    Range: Employee
+
+ObjectProperty: hasLeader
+    Domain: Department
+    Range: Director
+
+ObjectProperty: containsEmployee
+    Domain: Department
+    Range: Employee
+
+### Datatype Properties
+
+DataProperty: personName
+    Domain: Person
+    Range: xsd:string
+
+DataProperty: surname
+    Domain: Person
+    Range: xsd:string
+
+DataProperty: dayOfBirth
+    Domain: Person
+    Range: xsd:date
+
+DataProperty: phone
+    Domain: Person
+    Range: xsd:string
+
+DataProperty: email
+    Domain: Person
+    Range: xsd:string
+
+DataProperty: employeeId
+    Domain: Employee
+    Range: xsd:integer
+
+DataProperty: allowance
+    Domain: Intern
+    Range: xsd:double
+
+DataProperty: startDate
+    Domain: Contract
+    Range: xsd:date
+
+DataProperty: endDate
+    Domain: Contract
+    Range: xsd:date
+
+DataProperty: salary
+    Domain: Contract
+    Range: xsd:double
+
+DataProperty: projectName
+    Domain: Project
+    Range: xsd:string
+
+DataProperty: budget
+    Domain: Project
+    Range: xsd:double
+
+DataProperty: departmentCode
+    Domain: Department
+    Range: xsd:string
+
+DataProperty: level
+    Domain: SkillWithLevel
+    Range: xsd:string
+
+DataProperty: skillName
+    Domain: Skill
+    Range: xsd:string
+
+DataProperty: category
+    Domain: Skill
+    Range: xsd:string
