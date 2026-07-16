@@ -39,18 +39,30 @@ Class: Contract
 Class: Project
     SubClassOf: inverse (worksOn) min 1 Person
 
+Class: HRProject
+    SubClassOf: Project
+
+Class: BusinessProject
+    SubClassOf: Project
+
+Class: SoftwareProject
+    SubClassOf: Project
+
 Class: Department
     SubClassOf:
         hasLeader exactly 1 Director,
         inverse (belongsTo) min 1 Employee
 
 Class: SkillWithLevel
-    SubClassOf: referencesSkill exactly 1 Skill
+    SubClassOf:
+        ofEmployee exactly 1 Employee,
+        referencesSkill exactly 1 Skill
 
 Class: Skill
     SubClassOf: inverse (referencesSkill) min 1 SkillWithLevel
 
 DisjointClasses: Employee, Contractor, Intern
+DisjointClasses: HRProject, BusinessProject, SoftwareProject
 
 ### Object Properties
 
@@ -63,9 +75,10 @@ ObjectProperty: worksOn
     Domain: Person
     Range: Project
 
-ObjectProperty: hasSkillWithLevel
-    Domain: Employee
-    Range: SkillWithLevel
+ObjectProperty: ofEmployee
+    Characteristics: Functional
+    Domain: SkillWithLevel
+    Range: Employee
 
 ObjectProperty: requiresSkill
     Domain: Project

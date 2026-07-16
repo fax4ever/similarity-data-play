@@ -185,3 +185,6 @@ dimensionality-reduction/flud.jpg
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# MacOS
+.DS_Store

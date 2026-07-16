@@ -32,6 +32,10 @@ classDiagram
         -double budget
     }
 
+    class HRProject
+    class BusinessProject
+    class SoftwareProject
+
     class Department {
         -String departmentCode
     }
@@ -51,9 +55,13 @@ classDiagram
     Employee <|-- Manager
     Manager <|-- Director
 
+    Project <|-- HRProject
+    Project <|-- BusinessProject
+    Project <|-- SoftwareProject
+
     Person "1" o-- "1..*" Contract : hasContract
     Person "1..*" o-- "*" Project : worksOn
-    Employee "*" o-- "*" SkillWithLevel : hasSkillWithLevel
+    SkillWithLevel "*" --> "1" Employee : ofEmployee
     Project "*" o-- "*" SkillWithLevel : requiresSkill
     SkillWithLevel "1..*" --> "1" Skill : referencesSkill
     Manager "1" o-- "1..*" Employee : manages
