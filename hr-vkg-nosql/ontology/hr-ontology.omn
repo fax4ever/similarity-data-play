@@ -9,9 +9,13 @@ Ontology: <http://example.org/enterprise>
 ### Classes
 
 Class: Person
+    SubClassOf: hasContract min 1 Contract
 
 Class: Employee
-    SubClassOf: Person
+    SubClassOf:
+        Person,
+        belongsTo exactly 1 Department,
+        inverse (manages) exactly 1 Manager
 
 Class: Contractor
     SubClassOf: Person
@@ -20,26 +24,38 @@ Class: Intern
     SubClassOf: Person
 
 Class: Manager
-    SubClassOf: Employee
+    SubClassOf:
+        Employee,
+        manages min 1 Employee
 
 Class: Director
-    SubClassOf: Manager
+    SubClassOf:
+        Manager,
+        inverse (hasLeader) min 1 Department
 
 Class: Contract
+    SubClassOf: inverse (hasContract) exactly 1 Person
 
 Class: Project
+    SubClassOf: inverse (worksOn) min 1 Person
 
 Class: Department
+    SubClassOf:
+        hasLeader exactly 1 Director,
+        inverse (belongsTo) min 1 Employee
 
 Class: SkillWithLevel
+    SubClassOf: referencesSkill exactly 1 Skill
 
 Class: Skill
+    SubClassOf: inverse (referencesSkill) min 1 SkillWithLevel
 
 DisjointClasses: Employee, Contractor, Intern
 
 ### Object Properties
 
 ObjectProperty: hasContract
+    Characteristics: InverseFunctional
     Domain: Person
     Range: Contract
 
@@ -56,20 +72,24 @@ ObjectProperty: requiresSkill
     Range: SkillWithLevel
 
 ObjectProperty: referencesSkill
+    Characteristics: Functional
     Domain: SkillWithLevel
     Range: Skill
 
 ObjectProperty: manages
+    Characteristics: InverseFunctional
     Domain: Manager
     Range: Employee
 
 ObjectProperty: hasLeader
+    Characteristics: Functional
     Domain: Department
     Range: Director
 
-ObjectProperty: containsEmployee
-    Domain: Department
-    Range: Employee
+ObjectProperty: belongsTo
+    Characteristics: Functional
+    Domain: Employee
+    Range: Department
 
 ### Datatype Properties
 

@@ -45,17 +45,17 @@ classDiagram
         -String category
     }
 
-    Person <|-- Employee : "{disjoint}"
-    Person <|-- Contractor : "{disjoint}"
-    Person <|-- Intern : "{disjoint}"
+    Person <|-- Employee
+    Person <|-- Contractor
+    Person <|-- Intern
     Employee <|-- Manager
     Manager <|-- Director
 
-    Person --> "*" Contract : hasContract
-    Person --> "*" Project : worksOn
-    Employee --> "*" SkillWithLevel : hasSkillWithLevel
-    Project --> "*" SkillWithLevel : requiresSkill
-    SkillWithLevel --> "1" Skill : referencesSkill
-    Manager --> "*" Employee : manages
-    Department --> "1" Director : hasLeader
-    Department --> "*" Employee : containsEmployee
+    Person "1" o-- "1..*" Contract : hasContract
+    Person "1..*" o-- "*" Project : worksOn
+    Employee "*" o-- "*" SkillWithLevel : hasSkillWithLevel
+    Project "*" o-- "*" SkillWithLevel : requiresSkill
+    SkillWithLevel "1..*" --> "1" Skill : referencesSkill
+    Manager "1" o-- "1..*" Employee : manages
+    Department "1..*" --> "1" Director : hasLeader
+    Employee "1..*" --> "1" Department : belongsTo
