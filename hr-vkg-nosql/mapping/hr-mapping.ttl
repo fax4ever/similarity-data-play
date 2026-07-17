@@ -317,7 +317,7 @@
     ] .
 
 # ===========================================================================
-# MpR — requiresSkill (standard junction table)
+# MpR — requiresSkill (standard junction table: Project–Skill)
 # ===========================================================================
 
 <#MRequiresSkill> a rr:TriplesMap ;
@@ -328,7 +328,7 @@
     rr:predicateObjectMap [
         rr:predicate :requiresSkill ;
         rr:objectMap [
-            rr:template "http://example.org/enterprise#swl/{employee_id}/{skill_id}"
+            rr:template "http://example.org/enterprise#skill/{skill_id}"
         ]
     ] .
 

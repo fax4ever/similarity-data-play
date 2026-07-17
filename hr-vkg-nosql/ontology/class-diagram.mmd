@@ -68,7 +68,7 @@ classDiagram
     Person "1" o-- "1..*" Contract : hasContract
     Person "1..*" o-- "*" Project : worksOn
     SkillWithLevel "*" --> "1" Employee : ofEmployee
-    Project "*" o-- "*" SkillWithLevel : requiresSkill
+    Project "*" o-- "*" Skill : requiresSkill
     SkillWithLevel "1..*" --> "1" Skill : referencesSkill
     Manager "1" o-- "1..*" Employee : manages
     Department "1..*" --> "1" Director : hasLeader

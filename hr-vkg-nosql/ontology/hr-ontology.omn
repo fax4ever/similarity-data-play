@@ -86,7 +86,7 @@ ObjectProperty: ofEmployee
 
 ObjectProperty: requiresSkill
     Domain: Project
-    Range: SkillWithLevel
+    Range: Skill
 
 ObjectProperty: referencesSkill
     Characteristics: Functional

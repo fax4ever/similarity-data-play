@@ -138,13 +138,12 @@ CREATE TABLE TPersonProject (
 );
 
 -- ============================================================
--- MpR: ProjSkill (junction for requiresSkill)
+-- MpR: ProjSkill (junction for requiresSkill: Project–Skill)
 -- ============================================================
 CREATE TABLE TProjSkill (
     project_id  INTEGER NOT NULL,
-    employee_id INTEGER NOT NULL,
     skill_id    INTEGER NOT NULL,
-    CONSTRAINT pk_proj_skill PRIMARY KEY (project_id, employee_id, skill_id),
+    CONSTRAINT pk_proj_skill PRIMARY KEY (project_id, skill_id),
     CONSTRAINT fk_ps_project FOREIGN KEY (project_id) REFERENCES TProject(id),
-    CONSTRAINT fk_ps_swl FOREIGN KEY (employee_id, skill_id) REFERENCES TSkillWithLevel(employee_id, skill_id)
+    CONSTRAINT fk_ps_skill FOREIGN KEY (skill_id) REFERENCES TSkill(id)
 );

@@ -210,25 +210,21 @@ INSERT INTO TPersonProject (person_id, project_name) VALUES
 (15, 'Market Expansion APAC');
 
 -- ============================================================
--- TProjSkill (18 rows — skills required per project)
--- References TSkillWithLevel(employee_id, skill_id)
+-- TProjSkill (15 rows — generic skills required per project)
 -- ============================================================
-INSERT INTO TProjSkill (project_id, employee_id, skill_id) VALUES
-(1, 1, 5),
-(1, 3, 6),
-(1, 6, 1),
-(2, 1, 4),
-(2, 5, 6),
-(2, 3, 4),
-(3, 5, 5),
-(3, 9, 6),
-(3, 2, 4),
-(4, 2, 3),
-(4, 8, 5),
-(4, 2, 5),
-(5, 4, 1),
-(5, 7, 1),
-(5, 4, 8),
-(6, 7, 2),
-(6, 10, 2),
-(6, 7, 8);
+INSERT INTO TProjSkill (project_id, skill_id) VALUES
+(1, 4),
+(1, 5),
+(1, 6),
+(2, 4),
+(2, 6),
+(3, 4),
+(3, 5),
+(3, 7),
+(4, 3),
+(4, 5),
+(5, 1),
+(5, 2),
+(5, 8),
+(6, 1),
+(6, 2);

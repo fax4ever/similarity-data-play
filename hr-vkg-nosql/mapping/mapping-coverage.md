@@ -63,7 +63,7 @@ All available patterns from the slides are covered.
 | worksOn        | Person → Project            | \* : \*     | MpRa    | Junction table TPersonProject (FK→projectName, not PK) |
 | ofEmployee     | SkillWithLevel → Employee   | \* : 1      | MpRR    | Part of reified PK (employee_id)         |
 | referencesSkill| SkillWithLevel → Skill      | 1..* : 1    | MpRR    | Part of reified PK (skill_id)            |
-| requiresSkill  | Project → SkillWithLevel    | \* : \*     | MpR     | Junction table TProjSkill                |
+| requiresSkill  | Project → Skill             | \* : \*     | MpR     | Junction table TProjSkill                |
 | manages        | Manager → Employee          | 1 : 1..*    | MpRm    | FK manager_id merged into TEmployee (self-ref) |
 | hasLeader      | Department → Director       | 1..* : 1    | MpRm    | FK director_id merged into TDepartment   |
 | belongsTo      | Employee → Department       | 1..* : 1    | MpRm    | FK dept_code merged into TEmployee       |
@@ -138,12 +138,12 @@ target  :person/{person_id} rdf:type :Employee ;
 Maps a separate junction table (with composite FK as PK) to an object property.
 Used for many-to-many relationships where both FKs reference primary keys.
 
-**Applied to:** requiresSkill (Project–SkillWithLevel).
+**Applied to:** requiresSkill (Project–Skill).
 
 ```
 mappingId MRequiresSkill
-source  SELECT project_id, employee_id, skill_id FROM TProjSkill
-target  :project/{project_id} :requiresSkill :swl/{employee_id}/{skill_id} .
+source  SELECT project_id, skill_id FROM TProjSkill
+target  :project/{project_id} :requiresSkill :skill/{skill_id} .
 ```
 
 ### MpRa — Relationship with Identifier Alignment Pattern (1 association)
@@ -378,9 +378,9 @@ TPersonProject  (person_id, project_name)                 -- MpRa
                   FK person_id    -> TPerson(id)
                   FK project_name -> TProject(projectName) -- references UNIQUE, not PK
 
-TProjSkill      (project_id, employee_id, skill_id)       -- MpR
-                  FK project_id            -> TProject(id)
-                  FK (employee_id,skill_id)-> TSkillWithLevel
+TProjSkill      (project_id, skill_id)                     -- MpR
+                  FK project_id -> TProject(id)
+                  FK skill_id   -> TSkill(id)
 ```
 
 ---
