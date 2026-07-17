@@ -9,17 +9,17 @@ Ontology: <http://example.org/enterprise>
 ### Classes
 
 Class: Person
-    SubClassOf: hasContract min 1 Contract
+    SubClassOf: hasContract some Contract
 
 Class: Employee
     SubClassOf:
         Person,
-        belongsTo exactly 1 Department,
-        inverse (manages) exactly 1 Manager,
-        hasInfo exactly 1 EmployeeInfo
+        belongsTo some Department,
+        inverse (manages) some Manager,
+        hasInfo some EmployeeInfo
 
 Class: EmployeeInfo
-    SubClassOf: inverse (hasInfo) exactly 1 Employee
+    SubClassOf: inverse (hasInfo) some Employee
 
 Class: Contractor
     SubClassOf: Person
@@ -30,18 +30,18 @@ Class: Intern
 Class: Manager
     SubClassOf:
         Employee,
-        manages min 1 Employee
+        manages some Employee
 
 Class: Director
     SubClassOf:
         Manager,
-        inverse (hasLeader) min 1 Department
+        inverse (hasLeader) some Department
 
 Class: Contract
-    SubClassOf: inverse (hasContract) exactly 1 Person
+    SubClassOf: inverse (hasContract) some Person
 
 Class: Project
-    SubClassOf: inverse (worksOn) min 1 Person
+    SubClassOf: inverse (worksOn) some Person
 
 Class: HRProject
     SubClassOf: Project
@@ -54,16 +54,16 @@ Class: SoftwareProject
 
 Class: Department
     SubClassOf:
-        hasLeader exactly 1 Director,
-        inverse (belongsTo) min 1 Employee
+        hasLeader some Director,
+        inverse (belongsTo) some Employee
 
 Class: SkillWithLevel
     SubClassOf:
-        ofEmployee exactly 1 Employee,
-        referencesSkill exactly 1 Skill
+        ofEmployee some Employee,
+        referencesSkill some Skill
 
 Class: Skill
-    SubClassOf: inverse (referencesSkill) min 1 SkillWithLevel
+    SubClassOf: inverse (referencesSkill) some SkillWithLevel
 
 DisjointClasses: Employee, Contractor, Intern
 DisjointClasses: HRProject, BusinessProject, SoftwareProject
