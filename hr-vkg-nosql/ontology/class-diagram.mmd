@@ -11,6 +11,12 @@ classDiagram
         -integer employeeId
     }
 
+    class EmployeeInfo {
+        -String address
+        -String citizenStatus
+        -String maritalStatus
+    }
+
     class Contractor
 
     class Intern {
@@ -67,3 +73,4 @@ classDiagram
     Manager "1" o-- "1..*" Employee : manages
     Department "1..*" --> "1" Director : hasLeader
     Employee "1..*" --> "1" Department : belongsTo
+    Employee "1" --> "1" EmployeeInfo : hasInfo
