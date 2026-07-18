@@ -1,0 +1,5 @@
+[PrefixDeclaration]
+:		http://example.org/voc#
+
+[MappingDeclaration] @collection [[
+]]

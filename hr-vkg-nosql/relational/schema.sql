@@ -1,6 +1,9 @@
 -- HR VKG Schema — Standard SQL
 -- 11 tables implementing 10 mapping patterns
 
+-- Break circular FK (TDepartment -> TEmployee) before dropping tables
+ALTER TABLE TDepartment DROP CONSTRAINT IF EXISTS fk_department_director;
+
 DROP TABLE IF EXISTS TProjSkill;
 DROP TABLE IF EXISTS TPersonProject;
 DROP TABLE IF EXISTS TSkillWithLevel;
