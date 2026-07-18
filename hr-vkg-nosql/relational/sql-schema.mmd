@@ -1,0 +1,86 @@
+erDiagram
+    TPerson {
+        INTEGER id PK
+        VARCHAR personName
+        VARCHAR surname
+        DATE dayOfBirth
+        VARCHAR phone
+        VARCHAR email
+    }
+
+    TEmployee {
+        INTEGER employeeId PK
+        INTEGER person_id FK "UNIQUE"
+        INTEGER manager_id FK
+        VARCHAR dept_code FK
+        VARCHAR role
+        INTEGER info_id "UNIQUE"
+        VARCHAR address
+        VARCHAR citizenStatus
+        VARCHAR maritalStatus
+    }
+
+    TContractor {
+        INTEGER person_id PK_FK
+    }
+
+    TIntern {
+        INTEGER person_id PK_FK
+        DECIMAL allowance
+    }
+
+    TContract {
+        INTEGER person_id PK_FK
+        INTEGER contract_num PK
+        DATE startDate
+        DATE endDate
+        DECIMAL salary
+    }
+
+    TProject {
+        INTEGER id PK
+        VARCHAR projectName "UNIQUE"
+        DECIMAL budget
+        VARCHAR projectType
+    }
+
+    TDepartment {
+        VARCHAR dept_code PK
+        INTEGER director_id FK
+    }
+
+    TSkill {
+        INTEGER id PK
+        VARCHAR skillName
+        VARCHAR category
+    }
+
+    TSkillWithLevel {
+        INTEGER employee_id PK_FK
+        INTEGER skill_id PK_FK
+        VARCHAR level
+    }
+
+    TPersonProject {
+        INTEGER person_id PK_FK
+        VARCHAR project_name PK_FK
+    }
+
+    TProjSkill {
+        INTEGER project_id PK_FK
+        INTEGER skill_id PK_FK
+    }
+
+    TPerson ||--o| TEmployee : "person_id"
+    TPerson ||--o| TContractor : "person_id"
+    TPerson ||--o| TIntern : "person_id"
+    TPerson ||--o{ TContract : "person_id"
+    TPerson ||--o{ TPersonProject : "person_id"
+    TEmployee |o--o| TEmployee : "manager_id"
+    TEmployee }o--|| TDepartment : "dept_code"
+    TDepartment |o--o| TEmployee : "director_id"
+    TEmployee ||--o{ TSkillWithLevel : "employee_id"
+    TSkill ||--o{ TSkillWithLevel : "skill_id"
+    TProject ||--o{ TPersonProject : "project_name"
+    TProject ||--o{ TProjSkill : "project_id"
+    TSkill ||--o{ TProjSkill : "skill_id"

@@ -8,7 +8,7 @@
 | Associations| 9     |
 | Data Props  | 19    |
 | **Distinct Patterns** | **10** |
-| SQL Tables  | 10    |
+| SQL Tables  | 11    |
 
 All 15 classes, 9 object properties, and 19 data properties are fully covered
 using **10 distinct VKG mapping patterns** (the spec requires at least 3).
@@ -335,7 +335,7 @@ target  :project/{id} rdf:type :SoftwareProject .
 
 ---
 
-## SQL Schema (10 tables)
+## SQL Schema (11 tables)
 
 ```sql
 TPerson         (id, personName, surname, dayOfBirth, phone, email)
