@@ -1,192 +1,402 @@
 Prefix: : <http://example.org/enterprise#>
+Prefix: obda: <https://w3id.org/obda/vocabulary#>
 Prefix: owl: <http://www.w3.org/2002/07/owl#>
 Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
 Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
 
 Ontology: <http://example.org/enterprise>
 
-### Classes
 
-Class: Person
-    SubClassOf: hasContract some Contract
+Datatype: xsd:date
 
+    
+Datatype: xsd:double
+
+    
+Datatype: xsd:integer
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: belongsTo
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Employee
+    
+    Range: 
+        Department
+    
+    
+ObjectProperty: hasContract
+
+    Characteristics: 
+        InverseFunctional
+    
+    Domain: 
+        Person
+    
+    Range: 
+        Contract
+    
+    
+ObjectProperty: hasInfo
+
+    Characteristics: 
+        Functional,
+        InverseFunctional
+    
+    Domain: 
+        Employee
+    
+    Range: 
+        EmployeeInfo
+    
+    
+ObjectProperty: hasLeader
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Department
+    
+    Range: 
+        Director
+    
+    
+ObjectProperty: manages
+
+    Characteristics: 
+        InverseFunctional
+    
+    Domain: 
+        Manager
+    
+    Range: 
+        Employee
+    
+    
+ObjectProperty: ofEmployee
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        SkillWithLevel
+    
+    Range: 
+        Employee
+    
+    
+ObjectProperty: referencesSkill
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        SkillWithLevel
+    
+    Range: 
+        Skill
+    
+    
+ObjectProperty: requiresSkill
+
+    Domain: 
+        Project
+    
+    Range: 
+        Skill
+    
+    
+ObjectProperty: worksOn
+
+    Domain: 
+        Person
+    
+    Range: 
+        Project
+    
+    
+DataProperty: address
+
+    Domain: 
+        EmployeeInfo
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: allowance
+
+    Domain: 
+        Intern
+    
+    Range: 
+        xsd:double
+    
+    
+DataProperty: budget
+
+    Domain: 
+        Project
+    
+    Range: 
+        xsd:double
+    
+    
+DataProperty: category
+
+    Domain: 
+        Skill
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: citizenStatus
+
+    Domain: 
+        EmployeeInfo
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: dayOfBirth
+
+    Domain: 
+        Person
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: departmentCode
+
+    Domain: 
+        Department
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: email
+
+    Domain: 
+        Person
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: employeeId
+
+    Domain: 
+        Employee
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: endDate
+
+    Domain: 
+        Contract
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: level
+
+    Domain: 
+        SkillWithLevel
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: maritalStatus
+
+    Domain: 
+        EmployeeInfo
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: personName
+
+    Domain: 
+        Person
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: phone
+
+    Domain: 
+        Person
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: projectName
+
+    Domain: 
+        Project
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: salary
+
+    Domain: 
+        Contract
+    
+    Range: 
+        xsd:double
+    
+    
+DataProperty: skillName
+
+    Domain: 
+        Skill
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: startDate
+
+    Domain: 
+        Contract
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: surname
+
+    Domain: 
+        Person
+    
+    Range: 
+        xsd:string
+    
+    
+Class: BusinessProject
+
+    SubClassOf: 
+        Project
+    
+    
+Class: Contract
+
+    SubClassOf: 
+         inverse (hasContract) some Person
+    
+    
+Class: Contractor
+
+    SubClassOf: 
+        Person
+    
+    
+Class: Department
+
+    SubClassOf: 
+        hasLeader some Director,
+         inverse (belongsTo) some Employee
+    
+    
+Class: Director
+
+    SubClassOf: 
+        Manager,
+         inverse (hasLeader) some Department
+    
+    
 Class: Employee
-    SubClassOf:
+
+    SubClassOf: 
         Person,
         belongsTo some Department,
-        inverse (manages) some Manager,
-        hasInfo some EmployeeInfo
-
+        hasInfo some EmployeeInfo,
+         inverse (manages) some Manager
+    
+    
 Class: EmployeeInfo
-    SubClassOf: inverse (hasInfo) some Employee
 
-Class: Contractor
-    SubClassOf: Person
+    SubClassOf: 
+         inverse (hasInfo) some Employee
+    
+    
+Class: HRProject
 
+    SubClassOf: 
+        Project
+    
+    
 Class: Intern
-    SubClassOf: Person
 
+    SubClassOf: 
+        Person
+    
+    
 Class: Manager
-    SubClassOf:
+
+    SubClassOf: 
         Employee,
         manages some Employee
+    
+    
+Class: Person
 
-Class: Director
-    SubClassOf:
-        Manager,
-        inverse (hasLeader) some Department
-
-Class: Contract
-    SubClassOf: inverse (hasContract) some Person
-
+    SubClassOf: 
+        hasContract some Contract
+    
+    
 Class: Project
-    SubClassOf: inverse (worksOn) some Person
 
-Class: HRProject
-    SubClassOf: Project
+    SubClassOf: 
+         inverse (worksOn) some Person
+    
+    
+Class: Skill
 
-Class: BusinessProject
-    SubClassOf: Project
-
-Class: SoftwareProject
-    SubClassOf: Project
-
-Class: Department
-    SubClassOf:
-        hasLeader some Director,
-        inverse (belongsTo) some Employee
-
+    SubClassOf: 
+         inverse (referencesSkill) some SkillWithLevel
+    
+    
 Class: SkillWithLevel
-    SubClassOf:
+
+    SubClassOf: 
         ofEmployee some Employee,
         referencesSkill some Skill
+    
+    
+Class: SoftwareProject
 
-Class: Skill
-    SubClassOf: inverse (referencesSkill) some SkillWithLevel
+    SubClassOf: 
+        Project
+    
+    
+DisjointClasses: 
+    BusinessProject,HRProject,SoftwareProject
 
-DisjointClasses: Employee, Contractor, Intern
-DisjointClasses: HRProject, BusinessProject, SoftwareProject
+DisjointClasses: 
+    Contractor,Employee,Intern
 
-### Object Properties
-
-ObjectProperty: hasContract
-    Characteristics: InverseFunctional
-    Domain: Person
-    Range: Contract
-
-ObjectProperty: worksOn
-    Domain: Person
-    Range: Project
-
-ObjectProperty: ofEmployee
-    Characteristics: Functional
-    Domain: SkillWithLevel
-    Range: Employee
-
-ObjectProperty: requiresSkill
-    Domain: Project
-    Range: Skill
-
-ObjectProperty: referencesSkill
-    Characteristics: Functional
-    Domain: SkillWithLevel
-    Range: Skill
-
-ObjectProperty: manages
-    Characteristics: InverseFunctional
-    Domain: Manager
-    Range: Employee
-
-ObjectProperty: hasLeader
-    Characteristics: Functional
-    Domain: Department
-    Range: Director
-
-ObjectProperty: belongsTo
-    Characteristics: Functional
-    Domain: Employee
-    Range: Department
-
-ObjectProperty: hasInfo
-    Characteristics: Functional, InverseFunctional
-    Domain: Employee
-    Range: EmployeeInfo
-
-### Datatype Properties
-
-DataProperty: personName
-    Domain: Person
-    Range: xsd:string
-
-DataProperty: surname
-    Domain: Person
-    Range: xsd:string
-
-DataProperty: dayOfBirth
-    Domain: Person
-    Range: xsd:date
-
-DataProperty: phone
-    Domain: Person
-    Range: xsd:string
-
-DataProperty: email
-    Domain: Person
-    Range: xsd:string
-
-DataProperty: employeeId
-    Domain: Employee
-    Range: xsd:integer
-
-DataProperty: allowance
-    Domain: Intern
-    Range: xsd:double
-
-DataProperty: address
-    Domain: EmployeeInfo
-    Range: xsd:string
-
-DataProperty: citizenStatus
-    Domain: EmployeeInfo
-    Range: xsd:string
-
-DataProperty: maritalStatus
-    Domain: EmployeeInfo
-    Range: xsd:string
-
-DataProperty: startDate
-    Domain: Contract
-    Range: xsd:date
-
-DataProperty: endDate
-    Domain: Contract
-    Range: xsd:date
-
-DataProperty: salary
-    Domain: Contract
-    Range: xsd:double
-
-DataProperty: projectName
-    Domain: Project
-    Range: xsd:string
-
-DataProperty: budget
-    Domain: Project
-    Range: xsd:double
-
-DataProperty: departmentCode
-    Domain: Department
-    Range: xsd:string
-
-DataProperty: level
-    Domain: SkillWithLevel
-    Range: xsd:string
-
-DataProperty: skillName
-    Domain: Skill
-    Range: xsd:string
-
-DataProperty: category
-    Domain: Skill
-    Range: xsd:string
