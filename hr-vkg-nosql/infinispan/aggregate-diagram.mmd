@@ -1,0 +1,35 @@
+classDiagram
+    class EmployeeProfile {
+        <<Indexed>>
+        -String personName
+        -String surname
+        -String email
+        -Integer employeeId
+        -String role
+        -String departmentCode
+        -String address
+        -String citizenStatus
+        -String maritalStatus
+    }
+
+    class Contract {
+        -Integer contractNum
+        -String startDate
+        -String endDate
+        -Double salary
+    }
+
+    class SkillLevel {
+        -String skillName
+        -String category
+        -String level
+    }
+
+    class ProjectAssignment {
+        -String projectName
+        -String projectType
+    }
+
+    EmployeeProfile "1" *-- "1..*" Contract : contracts
+    EmployeeProfile "1" *-- "0..*" SkillLevel : skills
+    EmployeeProfile "1" *-- "0..*" ProjectAssignment : projects
