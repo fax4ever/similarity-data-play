@@ -13,3 +13,8 @@
    * Indexing the values of the caches allows us to treat them as documents (so we can query the inner fields)
 5. Define at least 5 Infinispan (called Ickle) queries using the Lucene indexes
 
+## To run Infinispan
+
+> podman run -p 11222:11222 -e USER="admin" -e PASS="password" --rm quay.io/infinispan/server:16.2.1
+
+[Infinispan Console](localhost:11222)
